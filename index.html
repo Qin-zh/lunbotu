@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>轮播图</title>
+	<style>
+		ul{
+			list-style:none;
+			padding:0;
+			margin:0;
+		}
+		 /* 中间舞台区域590*470  */
+		/* 本身没空格    后代有空格       区别写两份 前缀选择器不同    js 不同地方调用函数 */
+		#carousel01.box {
+			width: 590px;
+			height: 470px;
+			position: relative;
+			border:10px solid green;
+			margin:20px auto;
+			/* overflow:hidden; */
+		}
+
+
+   /* 通过切换 交换图片顺序 */
+   #carousel02.box {
+   	width: 590px;
+   	height: 470px;
+   	position: relative;
+   	border:10px solid orange;
+   	margin:20px auto;
+   	overflow:hidden;
+   }
+
+		#carousel01 .imgs{
+			position: absolute;
+			top:0;
+			display: flex;
+			/* flex-wrap:nowrap; 默认就是不换行 */
+		/* 	transition:2s;  //过度  */
+		}
+		#carousel01 .imgs li{
+			position: absolute;
+			top:0;
+			left:0;
+			 opacity:0; /* 透明  */
+			z-index:-1;   /*   */
+				transition:1s linear;  /* 过度    .dots li  过度效果应该同步 */
+		}
+		#carousel01 .imgs .show{
+			opacity:1;
+			z-index:0;/*  为1的时候 把 其他0覆盖  为0是 其他-1？ 0正常显示 而不是覆盖 */
+		}
+		#carousel02 .imgs{
+			position: absolute;
+			top:0;
+			display: flex;
+			/* flex-wrap:nowrap; 默认就是不换行 */
+			transition:2s;  //过度
+		}
+		.imgs img{
+			/* 把图片变成块  使它高度为470 去掉高度多出来的高度  图片将容器撑开的高度   方法2选一   */
+			display: block;
+			/* vertical-align:middle; */
+		}
+
+		/* 箭头设置 */
+		.arrows span{
+			position: absolute;
+			top:215px;   /* 470-40/2 */
+			background-color: #000;
+			color:#fff;
+			font-size: 36px;
+			font-family:"Courier New" ;/* impact 加粗字体 》《用英文字体  字体中间有空格 加引号*/
+			text-align: center;
+			width: 30px;
+			height: 40px;
+			line-height: 40px;
+			cursor:pointer;
+			opacity:0;  /* 透明0  */
+
+		}
+		.box:hover  .arrows span{
+			opacity:.5;
+		}
+		/* 优先级 选择器的优先级考虑 */
+		.box .arrows span:hover{
+			opacity:1;
+		}
+		.arrows .left{
+			left:0;
+		}
+		.arrows .right{
+			right:0;
+		}
+		/* 点的设置 */
+		.dots{
+			position: absolute;
+			bottom:20px;
+			width: 100%;
+			display:flex;
+			justify-content:center;
+		}
+		.dots li{
+			width: 30px;
+			height: 30px;
+			font-size: 20px;
+			line-height: 30px;
+			text-align: center;
+			background:orange;
+			border-radius:50%;
+			border:3px solid #ddd;
+			margin:0 2px;
+			cursor:pointer;
+			transition:1s linear;
+		}
+		.dots .act{
+			background:red;
+			color:#fff;
+		}
+		#lbt{
+			display: flex;
+			width:1250px;
+			border:10px solid;
+			justify-content:space-between;
+		}
+	</style>
+</head>
+<body>
+<div id="lbt">
+	<div id="carousel01" class="box">
+		<!-- ul.imgs>li*5>a[href=#]>img[src=imges/$.jpg][alt=$] -->
+		<ul class="imgs" >
+			<li class="show"><a href="#"><img src="images/1.jpg" alt="1"></a></li>
+			<li><a href="#"><img src="images/2.jpg" alt="2"></a></li>
+			<li><a href="#"><img src="images/3.jpg" alt="3"></a></li>
+			<li><a href="#"><img src="images/4.jpg" alt="4"></a></li>
+			<li><a href="#"><img src="images/5.jpg" alt="5"></a></li>
+		</ul>
+		<!-- arrow 箭头  carousel 轮播图 dot点-->
+		<!-- div.arrows>span.left{&lt;}+span.right{&gt;} -->
+		<div class="arrows">
+			<span class="left">&lt;</span>
+			<span class="right">&gt;</span>
+		</div>
+		<!-- ul.dots>li{$}*5 -->
+		<ul class="dots">
+			<li class="act">1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+		</ul>
+	</div>
+	<div id="carousel02" class="box">
+		<!-- ul.imgs>li*5>a[href=#]>img[src=imges/$.jpg][alt=$] -->
+		<ul class="imgs" style="left:0;">
+			<li><a href="#"><img src="images/1.jpg" alt="1"></a></li>
+			<li><a href="#"><img src="images/2.jpg" alt="2"></a></li>
+			<li><a href="#"><img src="images/3.jpg" alt="3"></a></li>
+			<li><a href="#"><img src="images/4.jpg" alt="4"></a></li>
+			<li><a href="#"><img src="images/5.jpg" alt="5"></a></li>
+		</ul>
+		<!-- arrow 箭头  carousel 轮播图 dot点-->
+		<!-- div.arrows>span.left{&lt;}+span.right{&gt;} -->
+		<div class="arrows">
+			<span class="left">&lt;</span>
+			<span class="right">&gt;</span>
+		</div>
+		<!-- ul.dots>li{$}*5 -->
+		<ul class="dots">
+			<li class="act">1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+		</ul>
+	</div>
+	</div>
+	<script>
+		function lbt(id,w){
+			<!--	// 轮播图的主要工作就是调整 图片列表的定位（left值）或者是显隐
+				// 思路 指定index值  根据index值显示对应的图片 并设值按钮的特殊样式
+				var box=document.getElementById(id);
+				// 图片列表
+				// var imgs=box.getElementsByClassName('imgs')[0];
+				var imgsBox=box.getElementsByClassName('imgs')[0];     //更改
+				var  imgs=imgsBox.getElementsByTagName('li');     //新增
+				// 左右箭头
+				var arrowL=box.getElementsByClassName('left')[0];
+				var arrowR=box.getElementsByClassName('right')[0];
+				// 按钮容器 dots   按钮列表btns
+				var dots=box.getElementsByClassName('dots')[0];
+				var btns=dots.getElementsByTagName('li');
+				var imgWidth=590;   //一个图宽度
+				var index=0; //当前显示图片的序号， 0号开始   范围是【0，n-1】
+				var n=btns.length; // 图片数量/按钮数量
+				var t=null; //定时器变量 标识符
+				var s=2;   //自动轮播 时间间隔 秒
+				function showImgdw (index){
+
+					imgsBox.style.left=-1*index*imgWidth+'px';
+				}
+				// //指定index对应的图片        更改
+					function showImgxy (index){
+						for(var i=0;i<n;i++){
+							imgs[i].removeAttribute('class');
+						}
+						imgs[index].className='show';
+					}
+				//指定index的按钮显示特殊样式
+				function showBtn (index){
+					for(var i=0;i<n;i++){
+						btns[i].removeAttribute('class');
+					}
+					btns[index].className='act';
+				}
+
+				//设置所有按钮的点击事件
+				for(var i=0;i<n;i++){
+					btns[i].index=i;  //知道现在是几号
+			  	btns[i].onclick=function(){
+				  showBtn(this.index);
+				  // showImg(this.index);
+				  // id=="carousel01"?showImgxy(this.index): showImgdw(this.index);
+				  w==1?showImgxy(this.index): showImgdw(this.index);
+			  }
+			}
+				arrowR.onclick=function(){
+					 index=(index<n-1)?index+1:0;// 序号的 边界 判断，最后一个之前都可以加1 最后一个应该回到0
+					// imgs.style.left=-1*index*imgWidth+'px';
+					// showImg(index);
+					showBtn(index);
+					// id=="carousel01"?showImgxy(index): showImgdw(index);
+					w==1?showImgxy(index): showImgdw(index);
+				}
+				arrowL.onclick=function(){
+			  index=(index>0)?index-1:n-1;// 序号的 边界 判断，大于0的时候 减一 第一一个应该回到最后一个
+					// imgs.style.left=-1*index*imgWidth+'px';
+				// showImg(index);
+				showBtn(index);
+				// id=="carousel01"?showImgxy(index): showImgdw(index);
+				w==1?showImgxy(index): showImgdw(index);
+				}
+				//鼠标滑过 box 清理定时器
+				box.onmouseover=function(){
+					clearInterval(t);
+				}
+				//鼠标离开 2秒触发一次右箭头函数
+				box.onmouseout=function(){
+					t=setInterval(arrowR.onclick,s*1000);
+				}
+				box.onmouseout();//鼠标不用划过 就自动执行 开启定时器
+		}
+		lbt('carousel01',1);
+		lbt('carousel02',2);
+	</script>
+
+</body>
+</html>
